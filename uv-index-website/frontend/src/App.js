@@ -10,7 +10,6 @@ function App() {
   const [selectedUVData, setSelectedUVData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showSimplifiedView, setShowSimplifiedView] = useState(false);
 
   // Handle search by postcode
   const handlePostcodeSearch = async (postcode) => {
@@ -20,7 +19,6 @@ function App() {
       const data = await api.getUVIndexByPostcode(postcode);
       if (data && data.uv_index) {
         setSelectedUVData(data.uv_index);
-        setShowSimplifiedView(true);
       } else {
         setError('No UV data found for this postcode');
       }
@@ -35,13 +33,10 @@ function App() {
   // Handle UV data selection from map
   const handleUVDataSelected = (data) => {
     setSelectedUVData(data);
-    setShowSimplifiedView(true);
   };
 
-  // Reset to map view
-  const handleBackToMap = () => {
-    setShowSimplifiedView(false);
-  };
+  // Determine if we have a selected location
+  const hasSelectedLocation = selectedUVData !== null;
 
   return (
     <div className="App">
@@ -59,28 +54,22 @@ function App() {
           {error && <div className="error-message">{error}</div>}
         </section>
 
-        {showSimplifiedView && selectedUVData ? (
-          <section className="simplified-view-section">
-            <SimplifiedUVDisplay uvData={selectedUVData} />
-            <button className="back-to-map-btn" onClick={handleBackToMap}>
-              Back to Map
-            </button>
+        <div className={`content-container ${hasSelectedLocation ? 'has-selected-location' : ''}`}>
+          <section className="map-section">
+            <h2>UV Index Map</h2>
+            <p>Click on a city marker to view current UV index and recommendations</p>
+            <Map 
+              onUVDataSelected={handleUVDataSelected} 
+              selectedLocation={selectedUVData}
+            />
           </section>
-        ) : (
-          <>
-            <section className="map-section">
-              <h2>UV Index Map</h2>
-              <p>Click on a city marker to view current UV index and recommendations</p>
-              <Map onUVDataSelected={handleUVDataSelected} />
-            </section>
 
-            {selectedUVData && (
-              <section className="uv-display-section">
-                <UVDisplay uvData={selectedUVData} />
-              </section>
-            )}
-          </>
-        )}
+          {selectedUVData && (
+            <section className="uv-display-section">
+              <SimplifiedUVDisplay uvData={selectedUVData} defaultSkinType={1} />
+            </section>
+          )}
+        </div>
       </main>
 
       <footer className="App-footer">

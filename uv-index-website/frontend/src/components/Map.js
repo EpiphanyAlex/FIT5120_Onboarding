@@ -38,6 +38,34 @@ const getUVDescription = (uvIndex) => {
   return 'Extreme';
 };
 
+// Component to handle map view changes
+function MapViewHandler({ selectedLocation }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (selectedLocation && selectedLocation.latitude && selectedLocation.longitude) {
+      const { latitude, longitude } = selectedLocation;
+      
+      // Always invalidate the map size to ensure correct calculations after container resize
+      map.invalidateSize();
+      
+      // Small delay to ensure the map has properly resized
+      setTimeout(() => {
+        // Use a consistent zoom level for better user experience
+        const zoomLevel = 10;
+        
+        // Fly to the selected location with animation and zoom in
+        map.flyTo([latitude, longitude], zoomLevel, {
+          animate: true,
+          duration: 1.5
+        });
+      }, 150);
+    }
+  }, [map, selectedLocation]);
+  
+  return null;
+}
+
 // Location marker component
 function LocationMarker({ onLocationFound }) {
   const [position, setPosition] = useState(null);
@@ -84,7 +112,7 @@ function LocationMarker({ onLocationFound }) {
   );
 }
 
-const UVMap = ({ onUVDataSelected }) => {
+const UVMap = ({ onUVDataSelected, selectedLocation }) => {
   const [uvData, setUVData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -225,6 +253,7 @@ const UVMap = ({ onUVDataSelected }) => {
         )}
         
         <LocationMarker onLocationFound={handleLocationFound} />
+        <MapViewHandler selectedLocation={selectedLocation} />
       </MapContainer>
       
       {error && <div className="error-message">{error}</div>}

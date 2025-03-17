@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/SkinToneSelector.css';
 
 const SKIN_TYPES = [
@@ -40,19 +40,31 @@ const SKIN_TYPES = [
   }
 ];
 
-const SkinToneSelector = ({ uvIndex, onSkinToneSelected }) => {
-  const [selectedType, setSelectedType] = useState(null);
-  const [showRecommendations, setShowRecommendations] = useState(false);
+const SkinToneSelector = ({ uvIndex, onSkinToneSelected, defaultSkinType = 1 }) => {
+  const [sliderValue, setSliderValue] = useState(defaultSkinType);
+  const [selectedType, setSelectedType] = useState(SKIN_TYPES[defaultSkinType - 1]);
+  const sliderRef = useRef(null);
 
-  const handleSkinTypeSelect = (skinType) => {
-    setSelectedType(skinType);
-    setShowRecommendations(true);
+  useEffect(() => {
+    // Find the closest skin type based on slider value
+    const typeIndex = Math.min(Math.max(Math.round(sliderValue) - 1, 0), 5);
+    setSelectedType(SKIN_TYPES[typeIndex]);
+    
     if (onSkinToneSelected) {
-      onSkinToneSelected(skinType);
+      onSkinToneSelected(SKIN_TYPES[typeIndex]);
     }
+  }, [sliderValue, onSkinToneSelected]);
+
+  const handleSliderChange = (e) => {
+    setSliderValue(parseFloat(e.target.value));
   };
 
   const getRecommendations = (skinType, uvIndex) => {
+    // Skip general recommendations for low UV index
+    if (uvIndex < 3) {
+      return [];
+    }
+    
     // Base recommendations for everyone
     const baseRecommendations = [
       'Wear sunglasses to protect your eyes',
@@ -80,9 +92,6 @@ const SkinToneSelector = ({ uvIndex, onSkinToneSelected }) => {
       // Moderate
       additionalRecommendations.push('Apply SPF 30+ sunscreen');
       additionalRecommendations.push('Wear protective clothing when outdoors for extended periods');
-    } else {
-      // Low
-      additionalRecommendations.push('Use sunscreen if you burn easily');
     }
 
     // Skin type specific recommendations
@@ -119,57 +128,79 @@ const SkinToneSelector = ({ uvIndex, onSkinToneSelected }) => {
     return [...baseRecommendations, ...additionalRecommendations];
   };
 
+  const recommendations = getRecommendations(selectedType, uvIndex);
+
+  // Create gradient background for slider
+  const gradientColors = SKIN_TYPES.map(type => type.color).join(', ');
+  const sliderBackground = `linear-gradient(to right, ${gradientColors})`;
+
+  // Calculate thumb position for the tooltip
+  const getThumbPosition = () => {
+    if (!sliderRef.current) return '0%';
+    const min = parseFloat(sliderRef.current.min);
+    const max = parseFloat(sliderRef.current.max);
+    const percent = ((sliderValue - min) / (max - min)) * 100;
+    return `${percent}%`;
+  };
+
   return (
     <div className="skin-tone-selector">
-      {!showRecommendations ? (
-        <>
-          <h3>Select Your Skin Type for Personalized Recommendations</h3>
-          <div className="skin-types-container">
-            {SKIN_TYPES.map((skinType) => (
+      <div className="skin-tone-slider-container">
+        <div className="skin-type-info">
+          <h4>{selectedType.name}</h4>
+          <p>{selectedType.description}</p>
+        </div>
+        
+        <div className="slider-container">
+          <div className="slider-gradient" style={{ background: sliderBackground }}></div>
+          <input
+            ref={sliderRef}
+            type="range"
+            min="1"
+            max="6"
+            step="0.01"
+            value={sliderValue}
+            onChange={handleSliderChange}
+            className="skin-tone-slider"
+          />
+          <div className="slider-markers">
+            {SKIN_TYPES.map((type) => (
               <div 
-                key={skinType.id}
-                className="skin-type-option"
-                onClick={() => handleSkinTypeSelect(skinType)}
-              >
-                <div 
-                  className="skin-color-sample" 
-                  style={{ backgroundColor: skinType.color }}
-                ></div>
-                <div className="skin-type-info">
-                  <h4>{skinType.name}</h4>
-                  <p>{skinType.description}</p>
-                </div>
-              </div>
+                key={type.id}
+                className="slider-marker"
+                style={{ left: `${(type.id - 1) * 20}%` }}
+              ></div>
             ))}
           </div>
-        </>
-      ) : (
-        <div className="personalized-recommendations">
-          <h3>Personalized Sun Protection Recommendations</h3>
-          <div className="skin-type-selected">
+          <div 
+            className="slider-thumb-tooltip" 
+            style={{ left: getThumbPosition() }}
+          >
             <div 
-              className="skin-color-sample" 
+              className="tooltip-color-sample" 
               style={{ backgroundColor: selectedType.color }}
             ></div>
-            <div className="skin-type-info">
-              <h4>{selectedType.name}</h4>
-              <p>{selectedType.description}</p>
-            </div>
-            <button 
-              className="change-skin-type-btn"
-              onClick={() => setShowRecommendations(false)}
-            >
-              Change Skin Type
-            </button>
           </div>
-          
+        </div>
+      </div>
+      
+      {recommendations.length > 0 ? (
+        <div className="personalized-recommendations">
+          <h3>Personalized Sun Protection Recommendations</h3>
           <div className="recommendations-list">
             <ul>
-              {getRecommendations(selectedType, uvIndex).map((rec, index) => (
+              {recommendations.map((rec, index) => (
                 <li key={index}>{rec}</li>
               ))}
             </ul>
           </div>
+        </div>
+      ) : (
+        <div className="low-uv-message">
+          <p>Current UV index is low. Most people can safely stay outdoors without special protection.</p>
+          {selectedType.id <= 2 && (
+            <p>However, with your skin type, consider wearing sunglasses if you are sensitive to sunlight.</p>
+          )}
         </div>
       )}
     </div>

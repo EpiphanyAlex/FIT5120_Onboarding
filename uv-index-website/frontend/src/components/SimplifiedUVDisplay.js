@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import SkinToneSelector from './SkinToneSelector';
 import '../styles/SimplifiedUVDisplay.css';
 
-const SimplifiedUVDisplay = ({ uvData }) => {
-  const [showSkinToneSelector, setShowSkinToneSelector] = useState(false);
-  
+const SimplifiedUVDisplay = ({ uvData, defaultSkinType = 1 }) => {
   if (!uvData) {
     return null;
   }
@@ -37,10 +35,6 @@ const SimplifiedUVDisplay = ({ uvData }) => {
   const uvLevel = getUVLevel(uvIndex);
   const uvColor = getUVColor(uvIndex);
 
-  const handleGetRecommendations = () => {
-    setShowSkinToneSelector(true);
-  };
-
   return (
     <div className="simplified-uv-container">
       <div className="uv-details-card">
@@ -62,23 +56,17 @@ const SimplifiedUVDisplay = ({ uvData }) => {
             </div>
           </div>
           
-          {!showSkinToneSelector && (
-            <button 
-              className="get-recommendations-btn"
-              onClick={handleGetRecommendations}
-            >
-              Get Protection Recommendations
-            </button>
-          )}
+          <div className="skin-tone-prompt">
+            <p>Select your skin type for personalized recommendations</p>
+          </div>
         </div>
       </div>
       
-      {showSkinToneSelector && (
-        <SkinToneSelector 
-          uvIndex={uvIndex} 
-          onSkinToneSelected={() => {}} 
-        />
-      )}
+      <SkinToneSelector 
+        uvIndex={uvIndex} 
+        onSkinToneSelected={() => {}} 
+        defaultSkinType={defaultSkinType}
+      />
     </div>
   );
 };
