@@ -1,0 +1,130 @@
+.skin-tone-selector {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.skin-tone-selector h3 {
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.skin-types-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.skin-type-option {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.skin-type-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: #2196f3;
+}
+
+.skin-color-sample {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+  border: 2px solid #f0f0f0;
+}
+
+.skin-type-info {
+  flex: 1;
+}
+
+.skin-type-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+}
+
+.skin-type-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.personalized-recommendations {
+  display: flex;
+  flex-direction: column;
+}
+
+.skin-type-selected {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.change-skin-type-btn {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-left: 15px;
+  transition: background-color 0.2s;
+}
+
+.change-skin-type-btn:hover {
+  background-color: #0d8bf2;
+}
+
+.recommendations-list {
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.recommendations-list ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.recommendations-list li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .skin-types-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .skin-type-selected {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .skin-color-sample {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .change-skin-type-btn {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+} 

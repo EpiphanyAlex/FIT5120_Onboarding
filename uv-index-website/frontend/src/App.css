@@ -1,0 +1,122 @@
+/* App container */
+.App {
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header styles */
+.App-header {
+  padding: 20px 0;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 30px;
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #2196f3;
+}
+
+.App-description {
+  margin: 10px 0 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Main content area */
+.App-main {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* Section styles */
+.search-section,
+.map-section,
+.uv-display-section,
+.simplified-view-section {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+.search-section h2,
+.map-section h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.search-section p,
+.map-section p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Error message */
+.error-message {
+  color: #e74c3c;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+/* Simplified view section */
+.simplified-view-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Back to map button */
+.back-to-map-btn {
+  margin-top: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.back-to-map-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Footer styles */
+.App-footer {
+  padding: 20px 0;
+  border-top: 1px solid #eaeaea;
+  margin-top: 20px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.App-footer p {
+  margin: 5px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .App-description {
+    font-size: 0.9rem;
+  }
+  
+  .search-section,
+  .map-section,
+  .uv-display-section,
+  .simplified-view-section {
+    padding: 15px;
+  }
+} 
