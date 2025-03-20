@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Map from './components/Map';
 import SearchBar from './components/SearchBar';
-import UVDisplay from './components/UVDisplay';
 import SimplifiedUVDisplay from './components/SimplifiedUVDisplay';
 import api from './services/api';
 
