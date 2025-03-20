@@ -68,11 +68,12 @@ def get_uv_data():
 
         xml_content = response.text
         xml_content = response.content.decode('utf-8-sig', errors='replace')
+        
+        # Convert XML to Python dictionary
         data = xmltodict.parse(xml_content)
+        
+        print("Successfully parsed XML data")
 
-        data = xmltodict.parse(xml_content)
-
-        # Update cache with new data and timestamp
         uv_data_cache['data'] = data
         uv_data_cache['timestamp'] = current_time
         uv_data_cache['raw_xml'] = xml_content

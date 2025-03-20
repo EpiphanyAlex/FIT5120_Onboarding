@@ -69,20 +69,37 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.risk-message {
+  text-align: center;
+  padding: 15px;
+  margin: 15px 0 0;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border-left: 4px solid;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  width: 100%;
+  max-width: 500px;
+  color: #444;
+}
+
 .skin-tone-prompt {
   text-align: center;
-  margin-top: 15px;
-  color: #666;
-  background-color: #f9f9f9;
-  padding: 10px;
-  border-radius: 6px;
+  margin: 10px 0;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background-color: #2196f3;
+  color: white;
+  font-weight: 500;
   width: 100%;
   max-width: 400px;
+  align-self: center;
+  box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3);
 }
 
 .skin-tone-prompt p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .get-recommendations-btn {

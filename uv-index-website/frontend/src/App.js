@@ -34,6 +34,11 @@ function App() {
   const handleUVDataSelected = (data) => {
     setSelectedUVData(data);
   };
+  
+  // Handle reset map view
+  const handleResetMap = () => {
+    setSelectedUVData(null);
+  };
 
   // Determine if we have a selected location
   const hasSelectedLocation = selectedUVData !== null;
@@ -61,6 +66,7 @@ function App() {
             <Map 
               onUVDataSelected={handleUVDataSelected} 
               selectedLocation={selectedUVData}
+              onResetMap={handleResetMap}
             />
           </section>
 
