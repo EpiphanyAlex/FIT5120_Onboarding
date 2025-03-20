@@ -310,13 +310,7 @@ export const api = {
         city.city.toLowerCase().includes(name.toLowerCase())
       );
       
-      // return filteredCities.map(city => ({
-      //   name: city.city,
-      //   state: city.state,
-      //   postcode: '0000' // Placeholder
-      // }));
-      
-      // 这里改成返回所有字段
+      // Return all fields from the filtered cities
       return filteredCities
     }
   },
@@ -345,199 +339,115 @@ export const api = {
     } catch (error) {
       console.error(`Error fetching UV index for postcode ${postcode}:`, error);
       
-      // For demo purposes, return Melbourne data for postcodes starting with 3
-      if (postcode.startsWith('3')) {
-        return {
-          city: {
-            name: 'Melbourne',
-            state: 'VIC',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Melbourne')
+      // Map postcodes to cities based on ranges
+      const postcodeNum = Number(postcode);
+      let cityData = null;
+      
+      // Sydney: 2000-2249
+      if (postcodeNum >= 2000 && postcodeNum <= 2249) {
+        cityData = {
+          name: 'Sydney',
+          state: 'NSW',
+          postcode: postcode
+        };
+      }
+      // Melbourne: 3000-3207
+      else if (postcodeNum >= 3000 && postcodeNum <= 3207) {
+        cityData = {
+          name: 'Melbourne',
+          state: 'VIC',
+          postcode: postcode
+        };
+      }
+      // Brisbane: 4000-4179
+      else if (postcodeNum >= 4000 && postcodeNum <= 4179) {
+        cityData = {
+          name: 'Brisbane',
+          state: 'QLD',
+          postcode: postcode
+        };
+      }
+      // Perth: 6000-6199
+      else if (postcodeNum >= 6000 && postcodeNum <= 6199) {
+        cityData = {
+          name: 'Perth',
+          state: 'WA',
+          postcode: postcode
+        };
+      }
+      // Adelaide: 5000-5099
+      else if (postcodeNum >= 5000 && postcodeNum <= 5099) {
+        cityData = {
+          name: 'Adelaide',
+          state: 'SA',
+          postcode: postcode
+        };
+      }
+      // Hobart: 7000-7099
+      else if (postcodeNum >= 7000 && postcodeNum <= 7099) {
+        cityData = {
+          name: 'Hobart',
+          state: 'TAS',
+          postcode: postcode
+        };
+      }
+      // Darwin: 0800-0899
+      else if (postcodeNum >= 800 && postcodeNum <= 899) {
+        cityData = {
+          name: 'Darwin',
+          state: 'NT',
+          postcode: postcode
+        };
+      }
+      // Canberra: 2600-2620
+      else if (postcodeNum >= 2600 && postcodeNum <= 2620) {
+        cityData = {
+          name: 'Canberra',
+          state: 'ACT',
+          postcode: postcode
+        };
+      }
+      // Gold Coast: 4209-4299
+      else if (postcodeNum >= 4209 && postcodeNum <= 4299) {
+        cityData = {
+          name: 'Gold Coast',
+          state: 'QLD',
+          postcode: postcode
+        };
+      }
+      // Newcastle: 2300-2310
+      else if (postcodeNum >= 2300 && postcodeNum <= 2310) {
+        cityData = {
+          name: 'Newcastle',
+          state: 'NSW',
+          postcode: postcode
+        };
+      }
+      // Townsville: 4810-4820
+      else if (postcodeNum >= 4810 && postcodeNum <= 4820) {
+        cityData = {
+          name: 'Townsville',
+          state: 'QLD',
+          postcode: postcode
+        };
+      }
+      // Alice Springs: 0870-0880
+      else if (postcodeNum >= 870 && postcodeNum <= 880) {
+        cityData = {
+          name: 'Alice Springs',
+          state: 'NT',
+          postcode: postcode
         };
       }
       
-      if (postcode.startsWith('4' || (Number(postcode) >= 4000 && Number(postcode) <= 4500))) {
-        return {
-          city: {
-            name: 'Brisbane',
-            state: 'QLD',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Brisbane')
-        };
-      }
-
-      if (postcode.startsWith('2604')) {
-        return {
-          city: {
-            name: 'Kingston',
-            state: 'Norfolk Island',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Kingston')
-        };
-      }
-
-
-      if (postcode.startsWith('5')) {
-        return {
-          city: {
-            name: 'Adelaide',
-            state: 'SA',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Adelaide')
-        };
-      }
-
-      if (postcode.startsWith('0870')) {
-        return {
-          city: {
-            name: 'Alice Springs',
-            state: 'NT',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Alice Springs')
-        };
-      }
-
-      if (postcode.startsWith('7175')) {
-        return {
-          city: {
-            name: 'Casey',
-            state: 'Antarctic',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Casey')
-        };
-      }
-
-      if (postcode.startsWith('4810')) {
-        return {
-          city: {
-            name: 'Townsvile',
-            state: 'TAS',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Townsvile')
-        };
-      }
-
-
-      if (postcode.startsWith('0') || (Number(postcode) >= 800 && Number(postcode) <= 832)) {
-        return {
-          city: {
-            name: 'Darwin',
-            state: 'NT',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Darwin')
-        };
-      }
-
-      if (postcode.startsWith('7151')) {
-        return {
-          city: {
-            name: 'Davis',
-            state: 'Antarctic',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Davis')
-        };
-      }
-
-      if (postcode.startsWith('4720')) {
-        return {
-          city: {
-            name: 'Emerald',
-            state: 'QLD',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Emerald')
-        };
-      }
-
-      if (postcode.startsWith('4') || (Number(postcode) >= 4207 && Number(postcode) <= 4230)) {
-        return {
-          city: {
-            name: 'Gold Coast',
-            state: 'QLD',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Gold Coast')
-        };
-      }
-
-
-      if (postcode.startsWith('7151')) {
-        return {
-          city: {
-            name: 'macquarie island',
-            state: 'TAS',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'macquarie island')
-        };
-      }
-
-
-      if (String(postcode) === '2607') {
-        return {
-          city: {
-            name: 'Mawson',
-            state: 'TAS',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Mawson')
-        };
-      }
-
-      if (postcode.startsWith('2') || (Number(postcode) >= 2267 && Number(postcode) <= 2308)) {
-        return {
-          city: {
-            name: 'Newcastle',
-            state: 'NSW',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Newcastle')
-        };
-      }
-
-      if (postcode.startsWith('6') || (Number(postcode) >= 6000 && Number(postcode) <= 6200)) {
-        return {
-          city: {
-            name: 'Perth',
-            state: 'SA',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Perth')
-        };
-      }
-
-      if (postcode.startsWith('2') || (Number(postcode) >= 2600 && Number(postcode) <= 3000)) {
-        return {
-          city: {
-            name: 'Canberra',
-            state: 'ACT',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Canberra')
-        };
-      }
-
-
-      
-      // For demo purposes, return Sydney data for postcodes starting with 2
-      if (postcode.startsWith('2') || (Number(postcode) >= 2000 && Number(postcode) <= 2599)) {
-        return {
-          city: {
-            name: 'Sydney',
-            state: 'NSW',
-            postcode: postcode
-          },
-          uv_index: MOCK_UV_DATA.find(city => city.city === 'Sydney')
-        };
+      if (cityData) {
+        const cityUVData = MOCK_UV_DATA.find(city => city.city === cityData.name);
+        if (cityUVData) {
+          return {
+            city: cityData,
+            uv_index: cityUVData
+          };
+        }
       }
       
       throw error;
@@ -590,7 +500,7 @@ export const api = {
       return response.data;
     } catch (error) {
       console.error(`Error fetching UV index for city name ${city}:`, error);
-      // 从mock data中找到匹配的城市
+      // Find matching city from mock data
       const matchingCity = MOCK_UV_DATA.find(cityData => cityData.city === city);
       if (matchingCity) {
         return {
