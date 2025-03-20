@@ -9,17 +9,33 @@ function App() {
   const [selectedUVData, setSelectedUVData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showSimplifiedView, setShowSimplifiedView] = useState(false);
 
   // Handle search by postcode
-  const handlePostcodeSearch = async (postcode) => {
+  const handlePostcodeSearch = async ({type, value}) => {
+    console.log('handlePostcodeSearch', {type, value});
     try {
       setLoading(true);
       setError(null);
-      const data = await api.getUVIndexByPostcode(postcode);
-      if (data && data.uv_index) {
-        setSelectedUVData(data.uv_index);
-      } else {
-        setError('No UV data found for this postcode');
+      if (type === 'postcode') {
+        const data = await api.getUVIndexByPostcode(value);
+        console.log('data', data);
+        if (data && data.uv_index) {
+          setSelectedUVData(data.uv_index);
+          setShowSimplifiedView(true);
+          console.log('data', data);
+        } else {
+          setError('No UV data found for this postcode');
+        }
+      }
+      if (type === 'city') {
+        const data = await api.getUVIndexByCityName(value);
+        console.log('getUVIndexByCity data', data);
+        if (data && data.uv_index) {
+          setSelectedUVData(data.uv_index);
+          setShowSimplifiedView(true);
+          console.log('data', data);
+        }
       }
     } catch (err) {
       console.error('Error searching by postcode:', err);
@@ -32,28 +48,37 @@ function App() {
   // Handle UV data selection from map
   const handleUVDataSelected = (data) => {
     setSelectedUVData(data);
-  };
-  
-  // Handle reset map view
-  const handleResetMap = () => {
-    setSelectedUVData(null);
+    setShowSimplifiedView(true);
   };
 
-  // Determine if we have a selected location
   const hasSelectedLocation = selectedUVData !== null;
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Australian UV Index Lookup</h1>
-        <p className="App-description">
-          View real-time UV index for major Australian cities and learn how to protect yourself from UV radiation
-        </p>
+      <header className="main-header">
+        <img
+          src="/header-bg.jpg"
+          alt="Header Background"
+          className="header-background"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '300px',
+            objectFit: 'cover',
+            zIndex: -1,
+          }}
+        />
+        <div className="header-content">
+          <h1 className="header-title">UV Australia</h1>
+          <p className="header-description">Your trusted resource for real-time UV index information across Australia. Protect your skin with accurate UV forecasts and personalized sun safety recommendations.</p>
+        </div>
       </header>
 
       <main className="App-main">
         <section className="search-section">
-          <h2>Search by Postcode</h2>
+          <h2>Find UV Index</h2>
           <SearchBar onSearch={handlePostcodeSearch} loading={loading} />
           {error && <div className="error-message">{error}</div>}
         </section>
@@ -65,7 +90,6 @@ function App() {
             <Map 
               onUVDataSelected={handleUVDataSelected} 
               selectedLocation={selectedUVData}
-              onResetMap={handleResetMap}
             />
           </section>
 
@@ -77,8 +101,9 @@ function App() {
         </div>
       </main>
 
-      <footer className="App-footer">
-        <p>© 2025 UV Index Australia</p>
+      <footer className="data-attribution-footer">
+        <p>UV data provided by the Australian Radiation Protection and Nuclear Safety Agency (ARPANSA)</p>
+        <p>© 2025 UV Australia</p>
       </footer>
     </div>
   );

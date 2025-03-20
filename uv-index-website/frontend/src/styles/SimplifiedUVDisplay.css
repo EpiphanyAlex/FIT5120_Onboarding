@@ -4,7 +4,9 @@
   width: 100%;
 }
 
-.uv-details-card {
+.uv-details-card, 
+.skin-type-selection-card,
+.recommendations-card {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -12,7 +14,8 @@
   margin-bottom: 20px;
 }
 
-.uv-details-card h2 {
+.uv-details-card h2,
+.recommendations-card h2 {
   margin-top: 0;
   margin-bottom: 20px;
   color: #333;
@@ -41,7 +44,7 @@
 }
 
 .uv-value {
-  font-size: 4rem;
+  font-size: 5rem;
   font-weight: bold;
   margin-right: 20px;
   line-height: 1;
@@ -69,55 +72,98 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.risk-message {
+.uv-peak-time-note {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
   text-align: center;
-  padding: 15px;
-  margin: 15px 0 0;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  border-left: 4px solid;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  width: 100%;
-  max-width: 500px;
-  color: #444;
 }
 
-.skin-tone-prompt {
+.uv-peak-time-note p {
+  margin: 0;
+}
+
+.skin-tone-prompt-highlight {
   text-align: center;
-  margin: 10px 0;
-  padding: 12px 15px;
-  border-radius: 8px;
-  background-color: #2196f3;
+  margin-bottom: 15px;
   color: white;
-  font-weight: 500;
+  background-color: #3498db;
+  padding: 12px;
+  border-radius: 6px;
   width: 100%;
-  max-width: 400px;
-  align-self: center;
-  box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3);
 }
 
-.skin-tone-prompt p {
+.skin-tone-prompt-highlight p {
   margin: 0;
   font-size: 1rem;
+  font-weight: 500;
 }
 
-.get-recommendations-btn {
-  display: block;
-  width: 100%;
-  background-color: #2196f3;
-  color: white;
-  border: none;
+.recommendations-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.recommendation-item {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 15px;
+}
+
+.recommendation-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.recommendation-item h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: #3498db;
+}
+
+.recommendation-item p {
+  margin: 0;
+  line-height: 1.5;
+  color: #555;
+}
+
+.skin-selection-instruction {
+  background-color: #f8f9fa;
   padding: 12px;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 10px;
+  border-radius: 6px;
+  text-align: center;
+  margin-top: 15px;
 }
 
-.get-recommendations-btn:hover {
-  background-color: #0d8bf2;
+.skin-selection-instruction p {
+  margin: 0;
+  color: #666;
+  font-style: italic;
+}
+
+.data-attribution-footer {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.data-attribution-footer p {
+  margin: 0 0 8px 0;
+  color: #555;
+}
+
+.data-attribution-footer a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.data-attribution-footer a:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 600px) {
