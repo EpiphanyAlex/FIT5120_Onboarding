@@ -1,10 +1,9 @@
 .map-container {
+  position: relative;
   width: 100%;
   height: 500px;
-  position: relative;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .map {
@@ -14,31 +13,118 @@
 
 .map-controls {
   position: absolute;
-  top: 10px;
+  top: 110px;
+  left: 10px;
+  z-index: 1000;
+}
+
+.location-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  color: #2196f3;
+  transition: background-color 0.2s;
+}
+
+.location-button:hover {
+  background-color: #f5f5f5;
+}
+
+.location-button:active {
+  background-color: #e5e5e5;
+}
+
+.location-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reset-map-button {
+  position: absolute;
+  bottom: 25px;
   right: 10px;
   z-index: 1000;
-  background: white;
-  padding: 10px;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.map-button {
-  background-color: #3498db;
-  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
   border: none;
-  padding: 8px 16px;
   border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s;
+  color: #2196f3;
+  transition: all 0.2s;
 }
 
-.map-button:hover {
-  background-color: #2980b9;
+.reset-map-button:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.05);
+}
+
+.reset-map-button:active {
+  background-color: #e5e5e5;
+}
+
+/* Style the leaflet zoom controls to match our custom buttons */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.leaflet-control-zoom-in, 
+.leaflet-control-zoom-out {
+  color: #333 !important;
+  background-color: white !important;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  font-size: 20px !important;
+}
+
+.leaflet-control-zoom-in:hover, 
+.leaflet-control-zoom-out:hover {
+  background-color: #f5f5f5 !important;
+  color: #333 !important;
+}
+
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(33, 150, 243, 0.3);
+  border-radius: 50%;
+  border-top-color: #2196f3;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .popup-content {
+  text-align: left;
   padding: 5px;
 }
 
@@ -49,11 +135,12 @@
 
 .uv-indicator {
   display: inline-block;
-  padding: 3px 6px;
-  border-radius: 3px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 5px;
   color: white;
   font-weight: bold;
-  margin-top: 5px;
+  font-size: 0.9rem;
 }
 
 .uv-low {
@@ -66,6 +153,7 @@
 
 .uv-high {
   background-color: #f1c40f;
+  color: #333;
 }
 
 .uv-very-high {
@@ -74,6 +162,10 @@
 
 .uv-extreme {
   background-color: #e74c3c;
+}
+
+.leaflet-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .search-container {
@@ -131,16 +223,4 @@
 .refresh-button:disabled {
   background-color: #95a5a6;
   cursor: not-allowed;
-}
-
-.loading-indicator {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px 20px;
-  border-radius: 4px;
-  z-index: 1000;
-  font-weight: bold;
 } 

@@ -43,15 +43,12 @@ def get_uv_data():
         
         # Save raw XML content
         xml_content = response.text
-        
-        # Log first 500 characters of XML content for debugging
-        logger.debug(f"XML response content (first 500 chars): {xml_content[:500]}...")
+        xml_content = response.content.decode('utf-8-sig', errors='replace')
         
         # Convert XML to Python dictionary
         data = xmltodict.parse(xml_content)
         
         print("Successfully parsed XML data")
-        logger.debug(f"Parsed data structure: {json.dumps(data, indent=2)[:500]}...")
         
         # Update cache
         uv_data_cache['data'] = data

@@ -59,6 +59,9 @@ function MapViewHandler({ selectedLocation }) {
           animate: true,
           duration: 1.5
         });
+        
+        // Close any open popups
+        map.closePopup();
       }, 150);
     }
   }, [map, selectedLocation]);
@@ -66,9 +69,8 @@ function MapViewHandler({ selectedLocation }) {
   return null;
 }
 
-// Location marker component
-function LocationMarker({ onLocationFound }) {
-  const [position, setPosition] = useState(null);
+// Map Controls component (location and zoom buttons)
+function MapControls({ onLocationFound }) {
   const [loading, setLoading] = useState(false);
   const map = useMap();
 
@@ -79,7 +81,6 @@ function LocationMarker({ onLocationFound }) {
 
   useEffect(() => {
     map.on('locationfound', (e) => {
-      setPosition(e.latlng);
       setLoading(false);
       if (onLocationFound) {
         onLocationFound(e.latlng.lat, e.latlng.lng);
@@ -101,18 +102,74 @@ function LocationMarker({ onLocationFound }) {
   return (
     <div className="map-controls">
       <button 
-        className="map-button" 
+        className="location-button" 
         onClick={handleGetLocation}
         disabled={loading}
+        title="Use my current location"
       >
-        {loading ? 'Getting Location...' : 'Get My UV Index'}
+        {loading ? (
+          <div className="loading-spinner"></div>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+          </svg>
+        )}
       </button>
       {loading && <div className="loading-indicator">Getting your location...</div>}
     </div>
   );
 }
 
-const UVMap = ({ onUVDataSelected, selectedLocation }) => {
+// Button to reset map view to Australia
+function ResetMapView({ hasSelectedLocation, onResetMap }) {
+  const map = useMap();
+  
+  // Only show the button when a location is selected
+  if (!hasSelectedLocation) return null;
+  
+  const handleResetView = () => {
+    // Australia's center and default zoom
+    const australiaCenter = [-25.2744, 133.7751];
+    const defaultZoom = 4;
+    
+    // Fly to Australia view
+    map.flyTo(australiaCenter, defaultZoom, {
+      animate: true,
+      duration: 1.5
+    });
+    
+    // Call the callback to reset selected location
+    if (onResetMap) {
+      onResetMap();
+    }
+  };
+  
+  return (
+    <button 
+      className="reset-map-button" 
+      onClick={handleResetView}
+      title="View all Australia"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+      </svg>
+    </button>
+  );
+}
+
+// Component to move zoom controls position
+function ChangeZoomControlPosition() {
+  const map = useMap();
+  
+  useEffect(() => {
+    // Move zoom control to top left
+    map.zoomControl.setPosition('topleft');
+  }, [map]);
+  
+  return null;
+}
+
+const UVMap = ({ onUVDataSelected, selectedLocation, onResetMap }) => {
   const [uvData, setUVData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -182,6 +239,9 @@ const UVMap = ({ onUVDataSelected, selectedLocation }) => {
     }
   };
 
+  // Check if we have a selected location
+  const hasSelectedLocation = selectedLocation !== null;
+
   // Calculate Australia's geographic center
   const australiaCenter = [-25.2744, 133.7751];
 
@@ -199,6 +259,7 @@ const UVMap = ({ onUVDataSelected, selectedLocation }) => {
         zoom={4} 
         className="map"
         ref={mapRef}
+        zoomControl={true}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -252,20 +313,16 @@ const UVMap = ({ onUVDataSelected, selectedLocation }) => {
           <div>No UV data available for the map</div>
         )}
         
-        <LocationMarker onLocationFound={handleLocationFound} />
+        <MapControls onLocationFound={handleLocationFound} />
         <MapViewHandler selectedLocation={selectedLocation} />
+        <ResetMapView 
+          hasSelectedLocation={hasSelectedLocation} 
+          onResetMap={onResetMap} 
+        />
+        <ChangeZoomControlPosition />
       </MapContainer>
       
       {error && <div className="error-message">{error}</div>}
-      
-      {lastUpdated && (
-        <div className="last-updated">
-          Data updated: {lastUpdated.toLocaleString()}
-          <button onClick={fetchUVData} className="refresh-button" disabled={loading}>
-            {loading ? 'Refreshing...' : 'Refresh Now'}
-          </button>
-        </div>
-      )}
     </div>
   );
 };
