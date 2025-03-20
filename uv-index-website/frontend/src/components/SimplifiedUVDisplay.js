@@ -53,7 +53,7 @@ const SimplifiedUVDisplay = ({ uvData, defaultSkinType = 1 }) => {
           <h3 className="city-name">{uvData.city}</h3>
           <div className="uv-value-container">
             <span className="uv-value" style={{ color: uvColor }}>
-              {uvIndex.toFixed(1)}
+            {Math.round(uvIndex)}
             </span>
             <div className="uv-info">
               <div className="uv-time">Updated: {timeInfo}</div>
